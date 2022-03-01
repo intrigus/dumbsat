@@ -5,8 +5,12 @@ import java.util.List;
 
 public record CNF(List<DNF> disjunctions) {
 
-	public CNF {
-		disjunctions = new ArrayList<>();
+	public CNF(List<DNF> disjunctions) {
+		this.disjunctions = disjunctions;
+	}
+
+	public CNF() {
+		this(new ArrayList<>());
 	}
 
 	public CNF deepCopy() {

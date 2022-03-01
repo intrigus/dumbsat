@@ -5,8 +5,8 @@ import java.util.List;
 
 public record DNF(List<Literal> literals) {
 
-	public DNF {
-		literals = new ArrayList<>();
+	public DNF(List<Literal> literals) {
+		this.literals = literals;
 	}
 
 	public DNF() {
