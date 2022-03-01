@@ -1,5 +1,7 @@
 package com.github.intrigus.dumbsat;
 
+import java.util.List;
+
 public class SatSolver {
 
 	public boolean isSat(CNF formula) {
@@ -33,17 +35,18 @@ public class SatSolver {
 	}
 
 	private CNF unitPropagate(Literal l, CNF formula) {
-		CNF copy = formula.deepCopy();
-		copy.disjunctions().stream().map(it -> {
+		List<DNF> newDisjunctions = formula.disjunctions().stream().map(it -> {
 			Literal negatedLiteral = not(l);
 			if (it.literals().contains(l)) {
-				return new DNF();
+				return null;
 			} else if (it.literals().contains(negatedLiteral)) {
-				return it.deepCopy().literals().remove(negatedLiteral);
+				DNF copy = it.deepCopy();
+				copy.literals().remove(negatedLiteral);
+				return copy;
 			} else {
 				return it;
 			}
-		});
-		return copy;
+		}).filter(it -> it != null).toList();
+		return new CNF(newDisjunctions);
 	}
 }
